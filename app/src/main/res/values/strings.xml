@@ -1,13 +1,8 @@
 <resources>
-    <string name="app_name">KotlinApp</string>
+    <string name="app_name">ApplauseGithubApp</string>
     <string name="error_unexpected">Unexpected Error</string>
-    <string name="error_user_exists">User with this e-mail already exists. Log in or use "Forgot Password" option.
-    </string>
-    <string name="error_wrong_credentials">Login failed, wrong e-mail/username or password.</string>
-
-    <string name="label_start_fragment">Start</string>
-    <string name="label_second_fragment">Second</string>
     <string name="label_settings_fragment">Settings</string>
-    <string name="label_first_tab_fragment">First Tab</string>
-    <string name="label_second_tab_fragment">Second Tab</string>
+    <string name="label_start_fragment">Applause Repositories</string>
+    <string name="search_box_hint">Enter repository name</string>
+    <string name="no_records">No repositories found</string>
 </resources>

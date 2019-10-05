@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
             android:id="@+id/startFragment"
             android:icon="@drawable/ic_home_filled_24dp"
-            android:title="start" />
-    <item
-            android:id="@+id/secondHostFragment"
-            android:icon="@drawable/ic_cloud_download_black_24dp"
-            android:title="second" />
+            android:title="@string/label_start_fragment" />
     <item
             android:id="@+id/settingsFragment"
             android:icon="@drawable/ic_settings_tabbar_icon_filled"
-            android:title="settings" />
+            android:title="@string/label_settings_fragment" />
 </menu>
