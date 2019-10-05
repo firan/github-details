@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="PrimaryInteractionColor">#008577</color>
+    <color name="PrimaryInteractionColorDark">#016157</color>
+    <color name="HighlightsColor">#f0f3f5</color>
+    <color name="StepsColor">#878c96</color>
+    <color name="TextColor">#282d37</color>
+    <color name="NeutralInformationLightColor">#28D7FF</color>
+    <color name="ErrorDarkColor">#F01414</color>
+    <color name="NotesColor">#fceca6</color>
+    <color name="BackgroundColor">#ffffff</color>
+    <color name="DisabledColor">#c8cdd2</color>
+    <color name="TimelineColor">#c9cdd1</color>
+    <color name="PositiveFeedbackLightColor">#aaf046</color>
+    <color name="WarningColor">#ffc000</color>
+    <color name="transparentPrimaryColor">#0a1e6e</color>
+    <color name="reasonBorderColor">#FFE7E8E9</color>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_main"
+            app:startDestination="@id/startFragment">
+
+    <fragment android:id="@+id/startFragment" android:name="com.example.myapplication.view.fragment.start.StartFragment"
+              android:label="@string/label_start_fragment" tools:layout="@layout/fragment_start">
+    </fragment>
+    <fragment android:id="@+id/secondHostFragment" android:name="com.example.myapplication.view.fragment.second.SecondHostFragment"
+              android:label="@string/label_second_fragment" tools:layout="@layout/fragment_second_host">
+    </fragment>
+    <fragment android:id="@+id/settingsFragment" android:name="com.example.myapplication.view.fragment.settings.SettingsFragment"
+              android:label="@string/label_settings_fragment" tools:layout="@layout/fragment_settings">
+    </fragment>
+</navigation>
