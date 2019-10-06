@@ -19,7 +19,6 @@ fun LifecycleOwner.showProgressDialog(context: Context) {
     }
     dialogs[this] = dialog
     this.lifecycle.addObserver(object : LifecycleObserver {
-
         @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
         fun onStop() {
             dialog.dismiss()

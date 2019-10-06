@@ -3,7 +3,6 @@ package com.example.applausegithubapp
 import androidx.room.Room
 import com.example.applausegithubapp.data.repository.GithubItemRepository
 import com.example.applausegithubapp.data.repository.GithubItemRepositoryImpl
-import com.example.applausegithubapp.usecase.account.*
 import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
 import com.example.applausegithubapp.usecase.repository.FetchRepositoryDetails
 import com.example.applausegithubapp.view.fragment.details.DetailsFragmentViewModel
@@ -21,7 +20,6 @@ val DISK_IO_EXECUTOR = named("disk_io_executor")
 val ExecutorModule = module {
     single<Executor>(NETWORK_IO_EXECUTOR) { Executors.newFixedThreadPool(4) }
     single<Executor>(DISK_IO_EXECUTOR) { Executors.newSingleThreadExecutor() }
-    factory<SecureStorage> { SecureSharedPrefsStorage(get()) }
 }
 
 val PersistenceModule = module {
@@ -43,6 +41,5 @@ val ViewModelModule = module {
 
 val UsecaseModule = module {
     factory { FetchRepositoryDetails(get(), get(DISK_IO_EXECUTOR)) }
-    factory { AuthStateManager(get()) }
     factory { ConnectivityCheck(get()) }
 }
