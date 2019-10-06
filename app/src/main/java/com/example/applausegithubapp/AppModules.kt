@@ -5,6 +5,7 @@ import com.example.applausegithubapp.data.repository.GithubItemRepository
 import com.example.applausegithubapp.data.repository.GithubItemRepositoryImpl
 import com.example.applausegithubapp.usecase.account.*
 import com.example.applausegithubapp.usecase.repository.FetchRepositoryDetails
+import com.example.applausegithubapp.view.fragment.details.DetailsFragmentViewModel
 import com.example.applausegithubapp.view.fragment.start.StartFragmentViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -36,6 +37,7 @@ val PersistenceModule = module {
 
 val ViewModelModule = module {
     viewModel { StartFragmentViewModel(get(), get()) }
+    viewModel { (repoId: Int) -> DetailsFragmentViewModel(repoId, get()) }
 }
 
 val UsecaseModule = module {

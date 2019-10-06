@@ -1,8 +1,19 @@
 <resources>
     <string name="app_name">ApplauseGithubApp</string>
     <string name="error_unexpected">Unexpected Error</string>
-    <string name="label_settings_fragment">Settings</string>
+    <string name="label_details_fragment">Repo Details</string>
     <string name="label_start_fragment">Applause Repositories</string>
     <string name="search_box_hint">Enter repository name</string>
     <string name="no_records">No repositories found</string>
+
+    <string name="description">Description</string>
+    <string name="identifier">Identifier</string>
+    <string name="isprivate">Is Private?</string>
+    <string name="hasissues">Has Issues?</string>
+    <string name="language">Language</string>
+    <string name="created">Created</string>
+    <string name="updated">Updated</string>
+    <string name="url">URL</string>
+
+
 </resources>

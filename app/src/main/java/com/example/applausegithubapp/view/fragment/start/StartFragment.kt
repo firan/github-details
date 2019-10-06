@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.applausegithubapp.R
 import com.example.applausegithubapp.usecase.common.FormatError
 import com.example.applausegithubapp.usecase.common.OnChangeTextWatcher
@@ -21,7 +22,8 @@ import com.example.applausegithubapp.usecase.common.showProgressDialog
 import kotlinx.android.synthetic.main.fragment_start.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionListener {
+class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionListener,
+    SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: StartFragmentViewModel by viewModel()
 
@@ -47,8 +49,8 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        pullToRefresh.setOnRefreshListener(this)
         initItemsList()
-        fetchRepositories()
         initObservers()
     }
 
@@ -69,13 +71,11 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
 
     private fun initObservers() {
         viewModel.repositories.observe(viewLifecycleOwner, Observer { githubRepositories ->
-            hideProgressDialog()
             viewModel.filteredRepositories.postValue(githubRepositories)
         })
 
         viewModel.apiError.observe(this, Observer { throwable ->
             throwable?.let { error ->
-                hideProgressDialog()
                 Toast.makeText(
                     requireContext(),
                     FormatError.perform(error, requireContext()),
@@ -91,16 +91,20 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
             emptyView.isVisible = !itemsVisible
         })
 
+        viewModel.isRefreshing.observe(viewLifecycleOwner, Observer { isRefreshing ->
+            pullToRefresh.isRefreshing = false
+            if (isRefreshing) {
+                showProgressDialog(requireContext())
+            } else {
+                hideProgressDialog()
+            }
+        })
+
         repoNameValue.addTextChangedListener(object : OnChangeTextWatcher() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 viewModel.filter(s.toString())
             }
         })
-    }
-
-    private fun fetchRepositories() {
-        showProgressDialog(requireContext())
-        viewModel.fetchRepositories()
     }
 
     override fun onStop() {
@@ -113,10 +117,12 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
     }
 
     override fun onClickRepo(repoId: Int) {
-//        findNavController().navigate(
-//            SignerSelectionFragmentDirections.actionSignerSelectionFragmentToSignatureFragment(
-//                SignatureParams(viewModel.consignments, contact.name)
-//            )
-//        )
+        findNavController().navigate(
+            StartFragmentDirections.actionStartFragmentToDetailsFragment(
+                repoId
+            )
+        )
     }
+
+    override fun onRefresh() = viewModel.onRefresh()
 }

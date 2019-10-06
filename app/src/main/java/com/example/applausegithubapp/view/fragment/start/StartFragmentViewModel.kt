@@ -17,15 +17,19 @@ class StartFragmentViewModel(
     var apiError = MutableLiveData<Throwable>()
     var filterRegex = ""
     val filteredRepositories = MutableLiveData<List<NameTuple>>()
+    val isRefreshing = MutableLiveData<Boolean>()
 
     fun fetchRepositories() {
         fetchRepositories.perform(GithubRepositoryRequest(0, 10), {
+            isRefreshing.postValue(false)
         }, {
             apiError.value = it
+            isRefreshing.postValue(false)
         })
     }
 
     fun onRefresh() {
+        isRefreshing.postValue(true)
         fetchRepositories()
     }
 

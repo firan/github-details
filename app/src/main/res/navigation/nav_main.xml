@@ -6,8 +6,14 @@
 
     <fragment android:id="@+id/startFragment" android:name="com.example.applausegithubapp.view.fragment.start.StartFragment"
               android:label="@string/label_start_fragment" tools:layout="@layout/fragment_start">
+        <action
+                android:id="@+id/action_startFragment_to_detailsFragment"
+                app:destination="@id/detailsFragment" />
     </fragment>
-    <fragment android:id="@+id/settingsFragment" android:name="com.example.applausegithubapp.view.fragment.settings.SettingsFragment"
-              android:label="@string/label_settings_fragment" tools:layout="@layout/fragment_settings">
+    <fragment android:id="@+id/detailsFragment" android:name="com.example.applausegithubapp.view.fragment.details.DetailsFragment"
+              android:label="@string/label_details_fragment" tools:layout="@layout/fragment_details">
+        <argument
+                android:name="repoId"
+                app:argType="integer"/>
     </fragment>
 </navigation>

@@ -1,0 +1,91 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/curved_header" />
+
+                <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/header"
+                        android:layout_alignTop="@id/header"
+                        android:layout_alignEnd="@id/header"
+                        android:layout_alignBottom="@id/header"
+                        android:gravity="center"
+                        android:textColor="@color/TextColor"
+                        android:textSize="18sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                <include
+                        android:id="@+id/description"
+                        layout="@layout/details_item" />
+
+                <include layout="@layout/details_item_divider" />
+
+                <include
+                        android:id="@+id/identifier"
+                        layout="@layout/details_item" />
+
+                <include layout="@layout/details_item_divider" />
+
+                <include
+                        android:id="@+id/url"
+                        layout="@layout/details_item" />
+
+                <include layout="@layout/details_item_divider" />
+
+                <include layout="@layout/details_item_divider" />
+
+                <include
+                        android:id="@+id/language"
+                        layout="@layout/details_item" />
+
+                <include
+                        android:id="@+id/created"
+                        layout="@layout/details_item" />
+
+                <include layout="@layout/details_item_divider" />
+
+                <include
+                        android:id="@+id/updated"
+                        layout="@layout/details_item" />
+
+                <include layout="@layout/details_item_divider" />
+
+                <include
+                        android:id="@+id/isprivate"
+                        layout="@layout/details_item" />
+
+                <include layout="@layout/details_item_divider" />
+
+                <include
+                        android:id="@+id/hasissues"
+                        layout="@layout/details_item" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

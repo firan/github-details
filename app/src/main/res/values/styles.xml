@@ -17,4 +17,12 @@
         <item name="hintTextColor">@color/PrimaryInteractionColor</item>
     </style>
 
+    <style name="SettingsLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/TextColor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

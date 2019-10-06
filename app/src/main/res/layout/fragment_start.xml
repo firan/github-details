@@ -119,6 +119,11 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.85" />
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/pullToRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/searchItems"
                 android:layout_width="match_parent"
@@ -133,5 +138,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="6"
                 tools:listitem="@layout/listitem_search" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

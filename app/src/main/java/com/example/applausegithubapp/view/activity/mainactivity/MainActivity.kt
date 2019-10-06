@@ -6,14 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.example.applausegithubapp.R
-import androidx.core.view.isVisible
 import com.example.applausegithubapp.usecase.common.convertDPToPixel
 import com.example.applausegithubapp.view.fragment.interfaces.ChildFragment
 import com.example.applausegithubapp.view.fragment.interfaces.FlatActionBar
 import com.example.applausegithubapp.view.fragment.interfaces.FragmentDialog
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
             when (f) {
                 is FragmentDialog -> {
-                    navigation?.isVisible = false
                     if (f is ChildFragment) {
                         supportActionBar?.setHomeAsUpIndicator(null)
                     } else {
@@ -51,13 +47,11 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 is ChildFragment -> {
-                    navigation?.isVisible = true
                     supportActionBar?.setHomeAsUpIndicator(null)
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 is NavHostFragment -> {}
                 else -> {
-                    navigation?.isVisible = true
                     supportActionBar?.setHomeAsUpIndicator(null)
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
@@ -66,7 +60,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNavigation() {
-        navigation?.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             supportActionBar?.title = destination.label
         }
