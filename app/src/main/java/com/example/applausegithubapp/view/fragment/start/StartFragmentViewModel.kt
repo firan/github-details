@@ -6,18 +6,20 @@ import androidx.lifecycle.ViewModel
 import com.example.applausegithubapp.data.repository.GithubItemRepository
 import com.example.applausegithubapp.data.to.GithubRepositoryRequest
 import com.example.applausegithubapp.data.to.NameTuple
+import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
 import com.example.applausegithubapp.usecase.repository.FetchRepositoryDetails
 
 class StartFragmentViewModel(
     private val fetchRepositories: FetchRepositoryDetails,
-    githubItemRepository: GithubItemRepository
+    githubItemRepository: GithubItemRepository,
+    connectivityCheck: ConnectivityCheck
 ) : ViewModel() {
     var repositories: LiveData<List<NameTuple>> =
         githubItemRepository.findGithubItemsNames()
     var apiError = MutableLiveData<Throwable>()
-    var filterRegex = ""
     val filteredRepositories = MutableLiveData<List<NameTuple>>()
     val isRefreshing = MutableLiveData<Boolean>()
+    var connection = connectivityCheck.ConnectionLiveData()
 
     fun fetchRepositories() {
         fetchRepositories.perform(GithubRepositoryRequest(0, 10), {
@@ -34,7 +36,6 @@ class StartFragmentViewModel(
     }
 
     fun filter(filter: String) {
-        filterRegex = filter
         filteredRepositories.postValue(repositories.value?.filter { item ->
             item.name.contains(
                 filter,

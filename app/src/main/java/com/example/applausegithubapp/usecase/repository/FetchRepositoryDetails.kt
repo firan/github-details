@@ -80,11 +80,11 @@ class FetchRepositoryDetails(
                 name = responseItem.name,
                 private = responseItem.private,
                 description = responseItem.description,
-                url = responseItem.url,
-                createdAt = responseItem.createdAt,
-                updatedAt = responseItem.updatedAt,
+                url = responseItem.html_url,
+                createdAt = responseItem.created_at,
+                updatedAt = responseItem.updated_at,
                 language = responseItem.language,
-                hasIssues = responseItem.hasIssues
+                hasIssues = responseItem.has_issues
             )
         }
         diskIOExecutor.execute {

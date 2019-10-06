@@ -30,9 +30,10 @@
                         android:layout_alignTop="@id/header"
                         android:layout_alignEnd="@id/header"
                         android:layout_alignBottom="@id/header"
+                        android:textStyle="bold"
                         android:gravity="center"
                         android:textColor="@color/TextColor"
-                        android:textSize="18sp" />
+                        android:textSize="24sp" />
             </RelativeLayout>
 
             <LinearLayout

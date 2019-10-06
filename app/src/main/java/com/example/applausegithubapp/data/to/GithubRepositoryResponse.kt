@@ -11,9 +11,9 @@ data class GithubRepositoryResponseItem(
     val name: String,
     val private: Boolean,
     val description: String?,
-    val url: String?,
-    val createdAt: Date,
-    val updatedAt: Date?,
+    val html_url: String?,
+    val created_at: Date,
+    val updated_at: Date?,
     val language: String?,
-    val hasIssues: Boolean?
+    val has_issues: Boolean?
 )

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import com.example.applausegithubapp.usecase.common.FormatError
 import com.example.applausegithubapp.usecase.common.OnChangeTextWatcher
 import com.example.applausegithubapp.usecase.common.hideProgressDialog
 import com.example.applausegithubapp.usecase.common.showProgressDialog
+import com.example.applausegithubapp.usecase.connection.ConnectionState
 import kotlinx.android.synthetic.main.fragment_start.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -100,6 +102,14 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
             }
         })
 
+        viewModel.connection.observe(viewLifecycleOwner, Observer { connectionState ->
+            if (connectionState == ConnectionState.Online) {
+                removeOfflineModeInfo()
+            } else {
+                showOfflineModeInfo()
+            }
+        })
+
         repoNameValue.addTextChangedListener(object : OnChangeTextWatcher() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 viewModel.filter(s.toString())
@@ -125,4 +135,25 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
     }
 
     override fun onRefresh() = viewModel.onRefresh()
+
+    private fun showOfflineModeInfo() {
+        if (offline_row != null) {
+            val animation = AnimationUtils.loadAnimation(offline_row.context, android.R.anim.slide_in_left)
+            if (offline_row.visibility == View.GONE) {
+                offline_row.visibility = View.VISIBLE
+                offline_row.startAnimation(animation)
+            }
+        }
+    }
+
+    private fun removeOfflineModeInfo() {
+        if (offline_row != null) {
+            val animation = AnimationUtils.loadAnimation(offline_row.context, android.R.anim.slide_out_right)
+            if (offline_row.visibility == View.VISIBLE) {
+                onRefresh()
+                offline_row.startAnimation(animation)
+                offline_row.visibility = View.GONE
+            }
+        }
+    }
 }

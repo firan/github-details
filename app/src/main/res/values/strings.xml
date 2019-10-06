@@ -14,6 +14,7 @@
     <string name="created">Created</string>
     <string name="updated">Updated</string>
     <string name="url">URL</string>
-
+    <string name="offline_mode_title">You\'re offline</string>
+    <string name="offline_mode_description">Please check your internet connection and try again later.</string>
 
 </resources>

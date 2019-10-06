@@ -4,14 +4,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-            app:cardElevation="0dp"
             android:id="@+id/searchBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/HighlightsColor"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -23,24 +24,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:background="@drawable/edittext_white"
                 android:paddingStart="4sp"
                 android:paddingEnd="4sp"
-                android:background="@drawable/edittext_white"
-                app:hintEnabled="false"
                 app:endIconDrawable="@drawable/ic_close"
                 app:endIconMode="clear_text"
-                app:endIconTint="@color/TextColor">
+                app:endIconTint="@color/TextColor"
+                app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/repoNameValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textCursorDrawable="@null"
                     android:backgroundTint="@null"
-                    android:hint="@string/search_box_hint"
                     android:drawableStart="@drawable/ic_search"
                     android:drawableTint="@color/StepsColor"
-                    android:inputType="textCapSentences" />
+                    android:hint="@string/search_box_hint"
+                    android:inputType="textCapSentences"
+                    android:textCursorDrawable="@null" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,10 +50,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchBox"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/searchBox">
 
         <ImageView
                 android:id="@+id/img_empty_repos"
@@ -124,21 +125,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchItems"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:visibility="gone"
-                android:scrollbars="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:itemCount="6"
-                tools:listitem="@layout/listitem_search" />
+            <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nestedScrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp">
+
+                    <include
+                            android:id="@+id/offline_row"
+                            layout="@layout/offline_mode_warning_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/searchItems"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:scrollbars="vertical"
+                            android:visibility="gone"
+                            tools:itemCount="6"
+                            tools:listitem="@layout/listitem_search" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

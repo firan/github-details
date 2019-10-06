@@ -1,10 +1,13 @@
 package com.example.applausegithubapp.view.fragment.details
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.example.applausegithubapp.R
 import com.example.applausegithubapp.data.entity.GithubItem
@@ -51,6 +54,12 @@ class DetailsFragment : Fragment(), ChildFragment, FlatActionBar {
 
         url.txt_title.text = getString(R.string.url)
         url.txt_value.text = githubRepository.url
+        url.txt_value.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.LinkColor
+            )
+        )
 
         created.txt_title.text = getString(R.string.created)
         created.txt_value.text = githubRepository.createdAt.toString()

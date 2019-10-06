@@ -4,6 +4,7 @@ import androidx.room.Room
 import com.example.applausegithubapp.data.repository.GithubItemRepository
 import com.example.applausegithubapp.data.repository.GithubItemRepositoryImpl
 import com.example.applausegithubapp.usecase.account.*
+import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
 import com.example.applausegithubapp.usecase.repository.FetchRepositoryDetails
 import com.example.applausegithubapp.view.fragment.details.DetailsFragmentViewModel
 import com.example.applausegithubapp.view.fragment.start.StartFragmentViewModel
@@ -36,11 +37,12 @@ val PersistenceModule = module {
 }
 
 val ViewModelModule = module {
-    viewModel { StartFragmentViewModel(get(), get()) }
+    viewModel { StartFragmentViewModel(get(), get(), get()) }
     viewModel { (repoId: Int) -> DetailsFragmentViewModel(repoId, get()) }
 }
 
 val UsecaseModule = module {
     factory { FetchRepositoryDetails(get(), get(DISK_IO_EXECUTOR)) }
     factory { AuthStateManager(get()) }
+    factory { ConnectivityCheck(get()) }
 }

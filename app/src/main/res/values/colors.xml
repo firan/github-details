@@ -13,6 +13,6 @@
     <color name="TimelineColor">#c9cdd1</color>
     <color name="PositiveFeedbackLightColor">#aaf046</color>
     <color name="WarningColor">#ffc000</color>
-    <color name="transparentPrimaryColor">#0a1e6e</color>
+    <color name="LinkColor">#0645ad</color>
     <color name="reasonBorderColor">#FFE7E8E9</color>
 </resources>
