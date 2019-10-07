@@ -1,5 +1,7 @@
 package com.example.applausegithubapp.view.fragment.start
 
+import android.app.Activity
+import androidx.fragment.app.Fragment
 import androidx.test.core.app.ActivityScenario
 import com.example.applausegithubapp.R
 import com.example.applausegithubapp.view.activity.ActivityTest
@@ -12,50 +14,21 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.applausegithubapp.view.getStartFragment
-import com.example.applausegithubapp.view.isKeyboardShown
-import junit.framework.TestCase
 import org.hamcrest.Matchers
 import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
  * author: Artur Godlewski
- * UI tests - what could be tested here? The UI in this sample is very simple, so I just made a test
- * of focus on search input, showed how can I wait for asyncs using IdlingResource than just
- * Thread.sleep and I made in the DetailsFragmentTest simple transition test
- *
- * Please treat it just like a showoff of e2e test ability with handling async operation
  */
 @RunWith(AndroidJUnit4::class)
-class StartFragmentTest : ActivityTest<MainActivity>() {
-
-    @Test
-    fun testShouldOpenKeyboardWhenClickOnSearchBar() {
-        onView(withId(R.id.repoNameValue)).perform(click())
-        TestCase.assertTrue(isKeyboardShown())
-    }
-
-    @Test
-    fun areResultsDisplayed() {
-        onView(
-            Matchers.allOf(
-                withId(R.id.searchItems),
-                ViewMatchers.isDisplayingAtLeast(1)
-            )
-        ).check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-    }
+class DetailsFragmentTest : ActivityTest<MainActivity>() {
 
     @Test
     fun isTransitionToDetailsDone() {
         onView(Matchers.allOf(withId(R.id.searchItems), ViewMatchers.isDisplayingAtLeast(1)))
             .check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<StartFragmentListAdapter.ViewHolder>(
-                    0,
-                    click()
-                )
-            )
+            .perform(RecyclerViewActions.actionOnItemAtPosition<StartFragmentListAdapter.ViewHolder>(0, click()))
 
         onView(
             Matchers.allOf(
@@ -73,5 +46,16 @@ class StartFragmentTest : ActivityTest<MainActivity>() {
             IdlingRegistry.getInstance().register(this.idlingResource)
         }
         return activityScenario
+    }
+
+    private fun getStartFragment(activity: Activity): Fragment? {
+        val fragment =
+            (activity as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        val currentFragment = fragment?.childFragmentManager?.fragments?.firstOrNull()
+        return if (currentFragment != null && currentFragment is StartFragment) {
+            currentFragment
+        } else {
+            null
+        }
     }
 }

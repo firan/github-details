@@ -5,6 +5,9 @@ import androidx.room.*
 import com.example.applausegithubapp.data.entity.GithubItem
 import com.example.applausegithubapp.data.to.NameTuple
 
+/**
+ * author: Artur Godlewski
+ */
 @Dao
 interface GithubItemDao {
     @Query("SELECT * FROM githubitem")

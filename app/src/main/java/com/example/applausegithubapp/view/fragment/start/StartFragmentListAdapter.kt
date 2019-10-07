@@ -1,6 +1,5 @@
 package com.example.applausegithubapp.view.fragment.start
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,9 @@ import com.example.applausegithubapp.data.to.NameTuple
 import com.example.applausegithubapp.usecase.common.setSafeOnClickListener
 import kotlinx.android.synthetic.main.listitem_search.view.*
 
+/**
+ * author: Artur Godlewski
+ */
 class StartFragmentListAdapter(
     private var dataset: List<NameTuple>,
     private val listener: OnRepoInteractionListener

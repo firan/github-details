@@ -16,6 +16,9 @@ import kotlinx.android.synthetic.main.fragment_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
+/**
+ * author: Artur Godlewski
+ */
 class DetailsFragment : Fragment(), ChildFragment, FlatActionBar {
 
     private val viewModel: DetailsFragmentViewModel by viewModel {

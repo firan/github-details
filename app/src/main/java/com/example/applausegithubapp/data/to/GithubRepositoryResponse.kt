@@ -2,10 +2,9 @@ package com.example.applausegithubapp.data.to
 
 import java.util.*
 
-data class GithubRepositoryResponse(
-    val body: List<GithubRepositoryResponseItem>
-)
-
+/**
+ * author: Artur Godlewski
+ */
 data class GithubRepositoryResponseItem(
     val id: String,
     val name: String,

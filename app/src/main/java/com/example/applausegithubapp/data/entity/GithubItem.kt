@@ -6,6 +6,9 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
+/**
+ * author: Artur Godlewski
+ */
 @Entity(tableName = "githubItem", indices = [Index(value = ["identifier"], unique = true)])
 data class GithubItem(
     @ColumnInfo(name = "identifier") var identifier: String = "",

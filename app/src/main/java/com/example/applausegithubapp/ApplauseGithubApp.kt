@@ -8,13 +8,22 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.EmptyLogger
 import timber.log.Timber
 
-class ApplauseGithubApp : Application(){
+/**
+ * author: Artur Godlewski
+ */
+class ApplauseGithubApp : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidContext(this@ApplauseGithubApp)
             modules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule))
-            logger(if (BuildConfig.DEBUG) AndroidLogger() else EmptyLogger())
+            logger(
+                if (BuildConfig.DEBUG) {
+                    AndroidLogger()
+                } else {
+                    EmptyLogger()
+                }
+            )
         }
         Timber.plant(Timber.DebugTree())
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)

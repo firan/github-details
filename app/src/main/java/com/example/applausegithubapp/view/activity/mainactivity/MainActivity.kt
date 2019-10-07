@@ -12,6 +12,9 @@ import com.example.applausegithubapp.view.fragment.interfaces.ChildFragment
 import com.example.applausegithubapp.view.fragment.interfaces.FlatActionBar
 import com.example.applausegithubapp.view.fragment.interfaces.FragmentDialog
 
+/**
+ * author: Artur Godlewski
+ */
 class MainActivity : AppCompatActivity() {
 
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }

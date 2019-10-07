@@ -4,6 +4,9 @@ import com.example.applausegithubapp.data.to.GithubRepositoryResponseItem
 import retrofit2.Call
 import retrofit2.http.*
 
+/**
+ * author: Artur Godlewski
+ */
 interface APIInterface {
     @GET("/orgs/applauseoss/repos?")
     fun fetchRepositoryDetails(

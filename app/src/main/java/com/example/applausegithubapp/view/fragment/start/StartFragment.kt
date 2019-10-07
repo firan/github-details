@@ -16,18 +16,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.applausegithubapp.R
-import com.example.applausegithubapp.usecase.common.FormatError
-import com.example.applausegithubapp.usecase.common.OnChangeTextWatcher
-import com.example.applausegithubapp.usecase.common.hideProgressDialog
-import com.example.applausegithubapp.usecase.common.showProgressDialog
+import com.example.applausegithubapp.usecase.common.*
 import com.example.applausegithubapp.usecase.connection.ConnectionState
 import kotlinx.android.synthetic.main.fragment_start.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * author: Artur Godlewski
+ */
 class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: StartFragmentViewModel by viewModel()
+    val fetcherListener: FetchingIdlingResource = FetchingIdlingResource()
 
     private val listAdapter by lazy {
         StartFragmentListAdapter(
@@ -38,6 +39,7 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
 
     override fun onResume() {
         super.onResume()
+        fetcherListener.beginFetching()
         viewModel.onRefresh()
         repoNameValue.setText("")
     }
@@ -99,6 +101,7 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
                 showProgressDialog(requireContext())
             } else {
                 hideProgressDialog()
+                fetcherListener.doneFetching()
             }
         })
 

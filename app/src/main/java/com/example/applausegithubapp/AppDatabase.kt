@@ -7,7 +7,10 @@ import com.example.applausegithubapp.data.converters.Converters
 import com.example.applausegithubapp.data.dao.GithubItemDao
 import com.example.applausegithubapp.data.entity.GithubItem
 
-@Database(entities = arrayOf(GithubItem::class), version = 1)
+/**
+ * author: Artur Godlewski
+ */
+@Database(entities = [GithubItem::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun githubItemDao(): GithubItemDao

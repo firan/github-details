@@ -3,6 +3,10 @@ package com.example.applausegithubapp.usecase.common
 import android.os.SystemClock
 import android.view.View
 
+/**
+ * author: Artur Godlewski
+ * thing for quickly clicking manual testers ;) really useful!
+ */
 class SafeClickListener(
     private var defaultInterval: Int = 1000, // common spotted threshold is 1000ms
     private val onSafeCLick: (View) -> Unit

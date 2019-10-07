@@ -4,7 +4,7 @@ import androidx.room.Room
 import com.example.applausegithubapp.data.repository.GithubItemRepository
 import com.example.applausegithubapp.data.repository.GithubItemRepositoryImpl
 import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
-import com.example.applausegithubapp.usecase.repository.FetchRepositoryDetails
+import com.example.applausegithubapp.usecase.fetchrepository.FetchRepositoryDetails
 import com.example.applausegithubapp.view.fragment.details.DetailsFragmentViewModel
 import com.example.applausegithubapp.view.fragment.start.StartFragmentViewModel
 import org.koin.android.ext.koin.androidApplication
@@ -14,11 +14,13 @@ import org.koin.dsl.module
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-val NETWORK_IO_EXECUTOR = named("network_io_executor")
+/**
+ * author: Artur Godlewski
+ */
+
 val DISK_IO_EXECUTOR = named("disk_io_executor")
 
 val ExecutorModule = module {
-    single<Executor>(NETWORK_IO_EXECUTOR) { Executors.newFixedThreadPool(4) }
     single<Executor>(DISK_IO_EXECUTOR) { Executors.newSingleThreadExecutor() }
 }
 
@@ -40,6 +42,6 @@ val ViewModelModule = module {
 }
 
 val UsecaseModule = module {
-    factory { FetchRepositoryDetails(get(), get(DISK_IO_EXECUTOR)) }
+    factory { FetchRepositoryDetails(get()) }
     factory { ConnectivityCheck(get()) }
 }

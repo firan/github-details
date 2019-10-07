@@ -6,6 +6,9 @@ import com.example.applausegithubapp.data.entity.GithubItem
 import com.example.applausegithubapp.data.to.NameTuple
 import java.util.concurrent.Executor
 
+/**
+ * author: Artur Godlewski
+ */
 interface GithubItemRepository {
     fun save(githubItems: List<GithubItem>)
     fun findById(id: Int): LiveData<GithubItem>

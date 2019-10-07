@@ -8,6 +8,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import com.example.applausegithubapp.R
 
+/**
+ * author: Artur Godlewski
+ * thing for show progress when loading data from webservice
+ */
 private val dialogs = HashMap<LifecycleOwner, Dialog>()
 
 fun LifecycleOwner.showProgressDialog(context: Context) {

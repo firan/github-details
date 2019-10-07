@@ -1,9 +1,8 @@
-package com.example.applausegithubapp.usecase.repository
+package com.example.applausegithubapp.usecase.fetchrepository
 
 import com.example.applausegithubapp.data.entity.GithubItem
 import com.example.applausegithubapp.data.repository.GithubItemRepository
 import com.example.applausegithubapp.data.to.GithubRepositoryRequest
-import com.example.applausegithubapp.data.to.GithubRepositoryResponse
 import com.example.applausegithubapp.data.to.GithubRepositoryResponseItem
 import com.example.applausegithubapp.webservice.APIClient
 import com.example.applausegithubapp.webservice.APIInterface
@@ -12,11 +11,27 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 import java.lang.Exception
-import java.util.concurrent.Executor
 
+/**
+ * author: Artur Godlewski
+ *
+ * I feel that, I could spend on it more time and implement paging in recyclerView with calls to
+ * service to make infinite scroll, but instruction description said only about 10 results,
+ * so I can't load more because of break assumptions :)
+ * Anyway I made parametrize page number and page size since github api is allowing those parameters
+ *
+ * Paging is easy, but it takes few more hours to apply it well using on View:
+ *         val endlessRecyclerOnScrollListener = object : EndlessRecyclerOnScrollListener() {
+ *               override fun onLoadMore() {
+ *                   viewModel.loadNextPage()
+ *               }
+ *           }
+ *           recyclerView.addOnScrollListener(endlessRecyclerOnScrollListener)
+ *
+ * And here I can take another page and append results
+ */
 class FetchRepositoryDetails(
-    private val githubItemRepository: GithubItemRepository,
-    private val diskIOExecutor: Executor
+    private val githubItemRepository: GithubItemRepository
 ) {
     companion object {
         const val UNPROCESSABLE_ENTITY = 422
@@ -54,20 +69,16 @@ class FetchRepositoryDetails(
                     when (response.code()) {
                         BAD_REQUEST -> {
                             Timber.e("Bad request ${response.code()}")
-                            failureHandler(Exception(response.code().toString()))
-                            return
                         }
                         UNPROCESSABLE_ENTITY -> {
                             Timber.e("Unprocessable entity ${response.code()}")
-                            failureHandler(Exception(response.code().toString()))
-                            return
                         }
                         else -> {
                             Timber.e("Repository fetch failed, error code: ${response.code()}")
-                            failureHandler(Exception(response.code().toString()))
-                            return
                         }
                     }
+                    failureHandler(Exception(response.code().toString()))
+                    return
                 }
             }
         })
@@ -87,8 +98,6 @@ class FetchRepositoryDetails(
                 hasIssues = responseItem.has_issues
             )
         }
-        diskIOExecutor.execute {
-            githubItemRepository.save(githubItems)
-        }
+        githubItemRepository.save(githubItems)
     }
 }
