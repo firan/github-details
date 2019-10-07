@@ -32,7 +32,6 @@
                         android:layout_alignBottom="@id/header"
                         android:textStyle="bold"
                         android:gravity="center"
-                        android:textColor="@color/TextColor"
                         android:textSize="24sp" />
             </RelativeLayout>
 
