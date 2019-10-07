@@ -5,14 +5,5 @@
     <color name="HighlightsColor">#f0f3f5</color>
     <color name="StepsColor">#878c96</color>
     <color name="TextColor">#282d37</color>
-    <color name="NeutralInformationLightColor">#28D7FF</color>
-    <color name="ErrorDarkColor">#F01414</color>
-    <color name="NotesColor">#fceca6</color>
     <color name="BackgroundColor">#ffffff</color>
-    <color name="DisabledColor">#c8cdd2</color>
-    <color name="TimelineColor">#c9cdd1</color>
-    <color name="PositiveFeedbackLightColor">#aaf046</color>
-    <color name="WarningColor">#ffc000</color>
-    <color name="LinkColor">#0645ad</color>
-    <color name="reasonBorderColor">#FFE7E8E9</color>
 </resources>

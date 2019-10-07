@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.listitem_search.view.*
  * author: Artur Godlewski
  */
 class StartFragmentListAdapter(
-    private var dataset: List<NameTuple>,
+    private var data: List<NameTuple>,
     private val listener: OnRepoInteractionListener
 ) : RecyclerView.Adapter<StartFragmentListAdapter.ViewHolder>() {
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
@@ -24,19 +24,21 @@ class StartFragmentListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val repo = dataset[position]
-        holder.view.txt_name.text = repo.name
+        holder.view.txt_name.text = data[position].name
+        /**
+         * check safeOnClickListener - it is very useful against quick clicking manual testers
+         */
         holder.view.setSafeOnClickListener {
-            listener.onClickRepo(dataset[position].rid)
+            listener.onClickRepo(data[position].rid)
         }
     }
 
     override fun getItemCount(): Int {
-        return dataset.size
+        return data.size
     }
 
     fun setItems(items: List<NameTuple>) {
-        dataset = items
+        data = items
         notifyDataSetChanged()
     }
 

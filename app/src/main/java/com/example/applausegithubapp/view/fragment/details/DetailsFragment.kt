@@ -55,12 +55,6 @@ class DetailsFragment : Fragment(), ChildFragment, FlatActionBar {
 
         url.txt_title.text = getString(R.string.url)
         url.txt_value.text = githubRepository.url
-        url.txt_value.setTextColor(
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.LinkColor
-            )
-        )
 
         created.txt_title.text = getString(R.string.created)
         created.txt_value.text = githubRepository.createdAt.toString()

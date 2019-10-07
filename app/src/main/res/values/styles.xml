@@ -6,12 +6,6 @@
         <item name="colorAccent">@color/PrimaryInteractionColor</item>
     </style>
 
-    <style name="BottomNavigation">
-        <item name="android:background">@color/BackgroundColor</item>
-        <item name="itemIconTint">@color/bottom_navigation_item_color</item>
-        <item name="itemTextColor">@color/bottom_navigation_item_color</item>
-    </style>
-
     <style name="MaterialEditTextStyleWithoutBorders" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/text_input_box_stroke</item>
         <item name="hintTextColor">@color/PrimaryInteractionColor</item>

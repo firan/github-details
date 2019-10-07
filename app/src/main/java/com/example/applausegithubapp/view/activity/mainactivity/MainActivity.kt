@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         initNavigation()
     }
 
@@ -32,13 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
             super.onFragmentResumed(fm, f)
-
             if (f is FlatActionBar && f !is NavHostFragment) {
                 supportActionBar?.elevation = 0F
             } else if (f !is NavHostFragment) {
                 supportActionBar?.elevation = applicationContext.convertDPToPixel(8).toFloat()
             }
-
             when (f) {
                 is FragmentDialog -> {
                     if (f is ChildFragment) {

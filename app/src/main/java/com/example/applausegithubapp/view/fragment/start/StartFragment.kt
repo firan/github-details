@@ -23,25 +23,21 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * author: Artur Godlewski
+ * as a bonus I implemented offline warning while no cellular or wifi connection is available, please check :)
+ * also you can refresh list by swipe down
  */
 class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionListener,
     SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: StartFragmentViewModel by viewModel()
     val fetcherListener: FetchingIdlingResource = FetchingIdlingResource()
+    private var alreadyLoaded = false
 
     private val listAdapter by lazy {
         StartFragmentListAdapter(
             emptyList(),
             this
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        fetcherListener.beginFetching()
-        viewModel.onRefresh()
-        repoNameValue.setText("")
     }
 
     override fun onCreateView(
@@ -51,11 +47,32 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
         return inflater.inflate(R.layout.fragment_start, container, false)
     }
 
+    /**
+     * reset search input when resumed
+     */
+    override fun onResume() {
+        super.onResume()
+        repoNameValue.setText("")
+
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pullToRefresh.setOnRefreshListener(this)
         initItemsList()
         initObservers()
+
+        /**
+         * this is for one-time call to webservice while checking the details and going back to
+         * list
+         * the last 2 lines could be also placed into onResume to perform refresh each time we are
+         * back in to main screen
+         */
+        if (savedInstanceState == null && !alreadyLoaded) {
+            alreadyLoaded = true
+            fetcherListener.beginFetching()
+            viewModel.onRefresh()
+        }
     }
 
     private fun initItemsList() {
@@ -95,6 +112,9 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
             emptyView.isVisible = !itemsVisible
         })
 
+        /**
+         * for steering the progress dialog display
+         */
         viewModel.isRefreshing.observe(viewLifecycleOwner, Observer { isRefreshing ->
             pullToRefresh.isRefreshing = false
             if (isRefreshing) {
@@ -105,6 +125,9 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
             }
         })
 
+        /**
+         * for offline hint steering
+         */
         viewModel.connection.observe(viewLifecycleOwner, Observer { connectionState ->
             if (connectionState == ConnectionState.Online) {
                 removeOfflineModeInfo()
@@ -120,6 +143,10 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
         })
     }
 
+    /**
+     * for close keyboard when you are filtering and then click on list item without closing keyboard
+     * manually
+     */
     override fun onStop() {
         super.onStop()
         if (view != null) {
@@ -137,11 +164,15 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
         )
     }
 
+    /**
+     * implementation for swipe to refresh interface
+     */
     override fun onRefresh() = viewModel.onRefresh()
 
     private fun showOfflineModeInfo() {
         if (offline_row != null) {
-            val animation = AnimationUtils.loadAnimation(offline_row.context, android.R.anim.slide_in_left)
+            val animation =
+                AnimationUtils.loadAnimation(offline_row.context, android.R.anim.slide_in_left)
             if (offline_row.visibility == View.GONE) {
                 offline_row.visibility = View.VISIBLE
                 offline_row.startAnimation(animation)
@@ -151,7 +182,8 @@ class StartFragment : Fragment(), StartFragmentListAdapter.OnRepoInteractionList
 
     private fun removeOfflineModeInfo() {
         if (offline_row != null) {
-            val animation = AnimationUtils.loadAnimation(offline_row.context, android.R.anim.slide_out_right)
+            val animation =
+                AnimationUtils.loadAnimation(offline_row.context, android.R.anim.slide_out_right)
             if (offline_row.visibility == View.VISIBLE) {
                 onRefresh()
                 offline_row.startAnimation(animation)

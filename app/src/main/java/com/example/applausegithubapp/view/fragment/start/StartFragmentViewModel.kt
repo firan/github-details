@@ -17,25 +17,21 @@ class StartFragmentViewModel(
     githubItemRepository: GithubItemRepository,
     connectivityCheck: ConnectivityCheck
 ) : ViewModel() {
-    var repositories: LiveData<List<NameTuple>> =
-        githubItemRepository.findGithubItemsNames()
-    var apiError = MutableLiveData<Throwable>()
     val filteredRepositories = MutableLiveData<List<NameTuple>>()
     val isRefreshing = MutableLiveData<Boolean>()
-    var connection = connectivityCheck.connectionLiveData
+    val repositories: LiveData<List<NameTuple>> =
+        githubItemRepository.findGithubItemsNames()
+    val connection = connectivityCheck.connectionLiveData
+    val apiError = MutableLiveData<Throwable>()
 
-    fun fetchRepositories() {
+    fun onRefresh() {
+        isRefreshing.postValue(true)
         fetchRepositories.perform(GithubRepositoryRequest(0, 10), {
             isRefreshing.postValue(false)
         }, {
             apiError.value = it
             isRefreshing.postValue(false)
         })
-    }
-
-    fun onRefresh() {
-        isRefreshing.postValue(true)
-        fetchRepositories()
     }
 
     fun filter(filter: String) {

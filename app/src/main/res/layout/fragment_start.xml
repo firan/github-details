@@ -38,7 +38,6 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@null"
                     android:drawableStart="@drawable/ic_search"
-                    android:drawableTint="@color/StepsColor"
                     android:hint="@string/search_box_hint"
                     android:inputType="textCapSentences"
                     android:textCursorDrawable="@null" />
