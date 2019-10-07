@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2019. For recrutation purposes only
- */
-
 package com.example.applausegithubapp.view.fragment.start
 
 import androidx.test.core.app.ActivityScenario

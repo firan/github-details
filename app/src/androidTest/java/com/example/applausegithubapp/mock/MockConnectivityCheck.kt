@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2019. For recrutation purposes only
- */
-
 package com.example.applausegithubapp.mock
 
 import androidx.lifecycle.MutableLiveData
