@@ -4,6 +4,7 @@ import androidx.room.Room
 import com.example.applausegithubapp.data.repository.GithubItemRepository
 import com.example.applausegithubapp.data.repository.GithubItemRepositoryImpl
 import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
+import com.example.applausegithubapp.usecase.connection.ConnectivityCheckImpl
 import com.example.applausegithubapp.usecase.fetchrepository.FetchRepositoryDetails
 import com.example.applausegithubapp.view.fragment.details.DetailsFragmentViewModel
 import com.example.applausegithubapp.view.fragment.start.StartFragmentViewModel
@@ -43,5 +44,8 @@ val ViewModelModule = module {
 
 val UsecaseModule = module {
     factory { FetchRepositoryDetails(get()) }
-    factory { ConnectivityCheck(get()) }
+}
+
+val ServiceModule = module {
+    factory<ConnectivityCheck> { ConnectivityCheckImpl(get()) }
 }

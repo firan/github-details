@@ -9,20 +9,24 @@ import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import timber.log.Timber
 
+interface ConnectivityCheck {
+    fun perform(): Boolean
+    val connectionLiveData: MutableLiveData<ConnectionState>
+}
+
 /**
  * author: Artur Godlewski
  * thing for show offline warning on main screen
  * implemented it as a bonus
  */
-class ConnectivityCheck(context: Context) {
-
+class ConnectivityCheckImpl(context: Context): ConnectivityCheck {
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val connectionLiveData = MutableLiveData<ConnectionState>()
+    override val connectionLiveData = MutableLiveData<ConnectionState>()
 
     /**
      * this can be used for check connection state on demand
      */
-    fun perform(): Boolean {
+    override fun perform(): Boolean {
         if (Build.VERSION.SDK_INT < 23) {
             val activeNetworkInfo = connectivityManager.activeNetworkInfo
             if (activeNetworkInfo != null) {
