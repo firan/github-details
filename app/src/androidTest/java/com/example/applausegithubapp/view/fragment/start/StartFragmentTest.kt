@@ -8,7 +8,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -31,38 +30,19 @@ import org.junit.runner.RunWith
 class StartFragmentTest : ActivityTest<MainActivity>() {
 
     @Test
-    fun testShouldOpenKeyboardWhenClickOnSearchBar() {
+    fun test_ShouldOpenKeyboardWhenClickOnSearchBar() {
         onView(withId(R.id.repoNameValue)).perform(click())
         TestCase.assertTrue(isKeyboardShown())
     }
 
     @Test
-    fun areResultsDisplayed() {
+    fun test_areResultsDisplayed() {
         onView(
             Matchers.allOf(
                 withId(R.id.searchItems),
                 ViewMatchers.isDisplayingAtLeast(1)
             )
         ).check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-    }
-
-    @Test
-    fun isTransitionToDetailsDone() {
-        onView(Matchers.allOf(withId(R.id.searchItems), ViewMatchers.isDisplayingAtLeast(1)))
-            .check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<StartFragmentListAdapter.ViewHolder>(
-                    0,
-                    click()
-                )
-            )
-
-        onView(
-            Matchers.allOf(
-                withId(R.id.header),
-                ViewMatchers.isDisplayed()
-            )
-        )
     }
 
     override fun startScenario(): ActivityScenario<MainActivity> {
