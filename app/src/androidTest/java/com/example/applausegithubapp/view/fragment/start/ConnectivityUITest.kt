@@ -31,7 +31,7 @@ class ConnectivityUITest : ActivityTest<MainActivity>() {
     private val mockConnectivityCheck: ConnectivityCheck by inject()
 
     @Test
-    fun test_areResultsDisplayed() {
+    fun test_isOfflineHintDisplayed() {
         (mockConnectivityCheck as MockConnectivityCheck).setConnectionState(ConnectionState.Offline)
         onView(
             Matchers.allOf(
