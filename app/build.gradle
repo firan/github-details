@@ -11,7 +11,7 @@ apply plugin: "androidx.navigation.safeargs"
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.example.applausegithubapp"
+        applicationId "com.firan.githubapp"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

@@ -1,0 +1,178 @@
+Index: app/src/main/java/com/example/applausegithubapp/usecase/connection/ConnectivityCheck.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.applausegithubapp.usecase.connection\n\nimport android.content.Context\nimport android.net.ConnectivityManager\nimport android.net.Network\nimport android.net.NetworkCapabilities\nimport android.net.NetworkRequest\nimport android.os.Build\nimport androidx.lifecycle.MutableLiveData\nimport timber.log.Timber\n\n/**\n * author: Artur Godlewski\n * thing for show offline warning on main screen\n * implemented it as a bonus\n */\nclass ConnectivityCheck(context: Context) {\n\n    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager\n    val connectionLiveData = MutableLiveData<ConnectionState>()\n\n    /**\n     * this can be used for check connection state on demand\n     */\n    fun perform(): Boolean {\n        if (Build.VERSION.SDK_INT < 23) {\n            val activeNetworkInfo = connectivityManager.activeNetworkInfo\n            if (activeNetworkInfo != null) {\n                return activeNetworkInfo.isConnected\n            }\n        } else {\n            val activeNetwork = connectivityManager.activeNetwork\n            if (activeNetwork != null) {\n                val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)\n                return networkCapabilities!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || networkCapabilities.hasTransport(\n                    NetworkCapabilities.TRANSPORT_WIFI\n                )\n            }\n        }\n        return false\n\n    }\n\n    private var networkCallback = object : ConnectivityManager.NetworkCallback() {\n        override fun onLost(network: Network?) {\n            connectionLiveData.postValue(ConnectionState.Offline)\n        }\n\n        override fun onUnavailable() {\n            connectionLiveData.postValue(ConnectionState.Offline)\n        }\n\n        override fun onLosing(network: Network?, maxMsToLive: Int) {\n            /**\n             * do nothing\n             */\n        }\n\n        override fun onAvailable(network: Network?) {\n            connectionLiveData.postValue(ConnectionState.Online)\n        }\n    }\n\n    init {\n        val networkRequest = NetworkRequest.Builder().build()\n        try {\n            connectivityManager.unregisterNetworkCallback(networkCallback)\n        } catch (e: RuntimeException) {\n            /**\n             * unregister when already registered\n             */\n            Timber.v(\"Already unregistered\")\n        }\n        connectivityManager.registerNetworkCallback(networkRequest, networkCallback)\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/applausegithubapp/usecase/connection/ConnectivityCheck.kt	(revision 12a033723ca7b8041249124a9bf7b3fc64f51134)
++++ app/src/main/java/com/example/applausegithubapp/usecase/connection/ConnectivityCheck.kt	(date 1570447779000)
+@@ -9,20 +9,26 @@
+ import androidx.lifecycle.MutableLiveData
+ import timber.log.Timber
+ 
++interface ConnectivityCheck {
++    fun perform(): Boolean
++    val connectionLiveData: MutableLiveData<ConnectionState>
++}
++
+ /**
+  * author: Artur Godlewski
+  * thing for show offline warning on main screen
+  * implemented it as a bonus
+  */
+-class ConnectivityCheck(context: Context) {
++class ConnectivityCheckImpl(context: Context): ConnectivityCheck {
+ 
+     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+-    val connectionLiveData = MutableLiveData<ConnectionState>()
++    override val connectionLiveData: MutableLiveData<ConnectionState>
++        get() = MutableLiveData()
+ 
+     /**
+      * this can be used for check connection state on demand
+      */
+-    fun perform(): Boolean {
++    override fun perform(): Boolean {
+         if (Build.VERSION.SDK_INT < 23) {
+             val activeNetworkInfo = connectivityManager.activeNetworkInfo
+             if (activeNetworkInfo != null) {
+Index: app/src/androidTest/java/com/example/applausegithubapp/view/activity/ActivityTest.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.applausegithubapp.view.activity\n\nimport android.app.Activity\nimport androidx.test.core.app.ActivityScenario\nimport androidx.test.espresso.IdlingRegistry\nimport com.example.applausegithubapp.ExecutorModule\nimport com.example.applausegithubapp.PersistenceModule\nimport com.example.applausegithubapp.UsecaseModule\nimport com.example.applausegithubapp.ViewModelModule\nimport com.example.applausegithubapp.usecase.common.FetchingIdlingResource\nimport org.junit.After\nimport org.junit.Before\nimport org.koin.core.context.loadKoinModules\nimport org.koin.core.context.unloadKoinModules\nimport org.koin.test.KoinTest\n\n/**\n * author: Artur Godlewski\n */\nabstract class ActivityTest<T : Activity> : KoinTest {\n\n    var idlingResource: FetchingIdlingResource? = null\n    private lateinit var scenario: ActivityScenario<T>\n\n    @Before\n    fun initScenario() {\n        unloadKoinModules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule))\n        loadKoinModules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule))\n        scenario = startScenario()\n    }\n\n    abstract fun startScenario(): ActivityScenario<T>\n\n    @After\n    fun closeScenario() {\n        IdlingRegistry.getInstance().unregister(idlingResource)\n        scenario.close()\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/androidTest/java/com/example/applausegithubapp/view/activity/ActivityTest.kt	(revision 12a033723ca7b8041249124a9bf7b3fc64f51134)
++++ app/src/androidTest/java/com/example/applausegithubapp/view/activity/ActivityTest.kt	(date 1570447671000)
+@@ -7,11 +7,14 @@
+ import com.example.applausegithubapp.PersistenceModule
+ import com.example.applausegithubapp.UsecaseModule
+ import com.example.applausegithubapp.ViewModelModule
++import com.example.applausegithubapp.mock.MockConnectivityCheck
+ import com.example.applausegithubapp.usecase.common.FetchingIdlingResource
++import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
+ import org.junit.After
+ import org.junit.Before
+ import org.koin.core.context.loadKoinModules
+ import org.koin.core.context.unloadKoinModules
++import org.koin.dsl.module
+ import org.koin.test.KoinTest
+ 
+ /**
+@@ -22,10 +25,14 @@
+     var idlingResource: FetchingIdlingResource? = null
+     private lateinit var scenario: ActivityScenario<T>
+ 
++    val mockServiceModule = module {
++        factory<ConnectivityCheck> { MockConnectivityCheck() }
++    }
++
+     @Before
+     fun initScenario() {
+-        unloadKoinModules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule))
+-        loadKoinModules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule))
++        unloadKoinModules(listOf(ExecutorModule, PersistenceModule, mockServiceModule, UsecaseModule, ViewModelModule))
++        loadKoinModules(listOf(ExecutorModule, PersistenceModule, mockServiceModule, UsecaseModule, ViewModelModule))
+         scenario = startScenario()
+     }
+ 
+Index: app/src/main/java/com/example/applausegithubapp/ApplauseGithubApp.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.applausegithubapp\n\nimport android.app.Application\nimport androidx.appcompat.app.AppCompatDelegate\nimport org.koin.android.ext.koin.androidContext\nimport org.koin.android.logger.AndroidLogger\nimport org.koin.core.context.startKoin\nimport org.koin.core.logger.EmptyLogger\nimport timber.log.Timber\n\n/**\n * author: Artur Godlewski\n */\nclass ApplauseGithubApp : Application() {\n    override fun onCreate() {\n        super.onCreate()\n        startKoin {\n            androidContext(this@ApplauseGithubApp)\n            modules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule))\n            logger(\n                if (BuildConfig.DEBUG) {\n                    AndroidLogger()\n                } else {\n                    EmptyLogger()\n                }\n            )\n        }\n        Timber.plant(Timber.DebugTree())\n        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/applausegithubapp/ApplauseGithubApp.kt	(revision 12a033723ca7b8041249124a9bf7b3fc64f51134)
++++ app/src/main/java/com/example/applausegithubapp/ApplauseGithubApp.kt	(date 1570448069000)
+@@ -3,7 +3,6 @@
+ import android.app.Application
+ import androidx.appcompat.app.AppCompatDelegate
+ import org.koin.android.ext.koin.androidContext
+-import org.koin.android.logger.AndroidLogger
+ import org.koin.core.context.startKoin
+ import org.koin.core.logger.EmptyLogger
+ import timber.log.Timber
+@@ -16,14 +15,8 @@
+         super.onCreate()
+         startKoin {
+             androidContext(this@ApplauseGithubApp)
+-            modules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule))
+-            logger(
+-                if (BuildConfig.DEBUG) {
+-                    AndroidLogger()
+-                } else {
+-                    EmptyLogger()
+-                }
+-            )
++            modules(listOf(ExecutorModule, PersistenceModule, ViewModelModule, UsecaseModule, ServiceModule))
++            logger(EmptyLogger())
+         }
+         Timber.plant(Timber.DebugTree())
+         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+Index: app/src/androidTest/java/com/example/applausegithubapp/mock/MockConnectivityCheck.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/androidTest/java/com/example/applausegithubapp/mock/MockConnectivityCheck.kt	(date 1570447811000)
++++ app/src/androidTest/java/com/example/applausegithubapp/mock/MockConnectivityCheck.kt	(date 1570447811000)
+@@ -0,0 +1,27 @@
++/*
++ * Copyright (c) 2019. For recrutation purposes only
++ */
++
++package com.example.applausegithubapp.mock
++
++import androidx.lifecycle.MutableLiveData
++import com.example.applausegithubapp.usecase.connection.ConnectionState
++import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
++
++/**
++ * author: Artur Godlewski
++ * thing for show offline warning on main screen
++ * mock service
++ */
++class MockConnectivityCheck: ConnectivityCheck {
++    override val connectionLiveData: MutableLiveData<ConnectionState>
++        get() = MutableLiveData()
++
++    override fun perform(): Boolean {
++        return true
++    }
++
++    fun setConnectionState(connectionState: ConnectionState) {
++        connectionLiveData.postValue(connectionState)
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/applausegithubapp/AppModules.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.applausegithubapp\n\nimport androidx.room.Room\nimport com.example.applausegithubapp.data.repository.GithubItemRepository\nimport com.example.applausegithubapp.data.repository.GithubItemRepositoryImpl\nimport com.example.applausegithubapp.usecase.connection.ConnectivityCheck\nimport com.example.applausegithubapp.usecase.fetchrepository.FetchRepositoryDetails\nimport com.example.applausegithubapp.view.fragment.details.DetailsFragmentViewModel\nimport com.example.applausegithubapp.view.fragment.start.StartFragmentViewModel\nimport org.koin.android.ext.koin.androidApplication\nimport org.koin.androidx.viewmodel.dsl.viewModel\nimport org.koin.core.qualifier.named\nimport org.koin.dsl.module\nimport java.util.concurrent.Executor\nimport java.util.concurrent.Executors\n\n/**\n * author: Artur Godlewski\n */\n\nval DISK_IO_EXECUTOR = named(\"disk_io_executor\")\n\nval ExecutorModule = module {\n    single<Executor>(DISK_IO_EXECUTOR) { Executors.newSingleThreadExecutor() }\n}\n\nval PersistenceModule = module {\n    // Room Database\n    single {\n        Room.databaseBuilder(androidApplication(), AppDatabase::class.java, \"application-db\")\n            .build()\n    }\n    // Dao\n    single { get<AppDatabase>().githubItemDao() }\n    // Repositories\n    single<GithubItemRepository> { GithubItemRepositoryImpl(get(), get(DISK_IO_EXECUTOR)) }\n}\n\nval ViewModelModule = module {\n    viewModel { StartFragmentViewModel(get(), get(), get()) }\n    viewModel { (repoId: Int) -> DetailsFragmentViewModel(repoId, get()) }\n}\n\nval UsecaseModule = module {\n    factory { FetchRepositoryDetails(get()) }\n    factory { ConnectivityCheck(get()) }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/applausegithubapp/AppModules.kt	(revision 12a033723ca7b8041249124a9bf7b3fc64f51134)
++++ app/src/main/java/com/example/applausegithubapp/AppModules.kt	(date 1570447551000)
+@@ -4,6 +4,7 @@
+ import com.example.applausegithubapp.data.repository.GithubItemRepository
+ import com.example.applausegithubapp.data.repository.GithubItemRepositoryImpl
+ import com.example.applausegithubapp.usecase.connection.ConnectivityCheck
++import com.example.applausegithubapp.usecase.connection.ConnectivityCheckImpl
+ import com.example.applausegithubapp.usecase.fetchrepository.FetchRepositoryDetails
+ import com.example.applausegithubapp.view.fragment.details.DetailsFragmentViewModel
+ import com.example.applausegithubapp.view.fragment.start.StartFragmentViewModel
+@@ -43,5 +44,8 @@
+ 
+ val UsecaseModule = module {
+     factory { FetchRepositoryDetails(get()) }
+-    factory { ConnectivityCheck(get()) }
++}
++
++val ServiceModule = module {
++    factory<ConnectivityCheck> { ConnectivityCheckImpl(get()) }
+ }
+\ No newline at end of file

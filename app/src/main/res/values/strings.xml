@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">ApplauseGithubApp</string>
+    <string name="app_name">FiranGithubApp</string>
     <string name="error_unexpected">Unexpected Error</string>
     <string name="label_details_fragment">Repo Details</string>
-    <string name="label_start_fragment">Applause Repositories</string>
+    <string name="label_start_fragment">Firan Repositories</string>
     <string name="search_box_hint">Enter repository name</string>
     <string name="no_records">No repositories found</string>
 

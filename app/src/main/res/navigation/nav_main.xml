@@ -4,13 +4,13 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_main"
             app:startDestination="@id/startFragment">
 
-    <fragment android:id="@+id/startFragment" android:name="com.example.applausegithubapp.view.fragment.start.StartFragment"
+    <fragment android:id="@+id/startFragment" android:name="com.firan.githubapp.view.fragment.start.StartFragment"
               android:label="@string/label_start_fragment" tools:layout="@layout/fragment_start">
         <action
                 android:id="@+id/action_startFragment_to_detailsFragment"
                 app:destination="@id/detailsFragment" />
     </fragment>
-    <fragment android:id="@+id/detailsFragment" android:name="com.example.applausegithubapp.view.fragment.details.DetailsFragment"
+    <fragment android:id="@+id/detailsFragment" android:name="com.firan.githubapp.view.fragment.details.DetailsFragment"
               android:label="@string/label_details_fragment" tools:layout="@layout/fragment_details">
         <argument
                 android:name="repoId"
